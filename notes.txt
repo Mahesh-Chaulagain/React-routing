@@ -1,0 +1,58 @@
+# React Router
+- Create React App doesn't include page routing so react router is the most popular solution
+- to add react router in your application, run this in the terminal from te root directory of the application
+    npm i -D react-router-dom@latest
+- to create an application with multiple page routes, first start with the file structure
+    -within the src folder , create a folder called pages with several files:
+    src\pages\:
+        .Layout.js
+        .Home.js
+        .Blogs.js
+        .Contact.js
+        .NoPage.js
+
+    Each file will contain a very basic react component
+
+- Example: Using react router to route to pages based on URL
+   import ReactDOM from "react-dom/client";
+    import { BrowserRouter, Routes, Route} from "react-router-dom";
+    import Layout from "./pages/Layout";
+    import Home from "./pages/Home";
+    import Blogs from "./pages/Blogs";
+    import Contact from "./pages/Contact";
+    import NoPage from "./pages/NoPage";
+
+    export default function App(){
+    return(
+        <BrowserRouter>
+        <Routes>
+            <Route path="/" element={<Layout/>}>
+                <Route index element={<Home />}/>
+                <Route path="blogs" element={<Blogs/>}/>
+                <Route path="contact" element={<Contact/>}/>
+                <Route path="*" element={<NoPage/>}/>
+            </Route>
+        </Routes>
+        </BrowserRouter>
+    );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App/>);
+
+# example explained
+    - we wrap our content first with <BrowserRouter>
+    - then we define our <Routes>. 
+        - an application can have multiple <Routes>
+    - <Route>s can be nested, the first <Route> has a path of "/" and renders the "Layout" component
+    - the nested <Route>s inherit and add to the parent route. so the "blogs" path is combined with the parent and becomes "/blogs"
+    - the "home" component route does not have a path but has a "index" attribute which specifies this route as the default route for 
+        the parent route which is "/"
+    - setting the path to "*" will act as a catch-all for any undefined URLs. this is great for a 404 error page
+
+# Pages/Components
+- the "Layout" component has <Outlet> and <Link> elements
+    - the <Outlet> renders the current route selected
+    - <Link> is used to set the URL and keep track of browsing history
+- anytime we link to an internal path, we will use <Link> instead of <a href=" ">
+- the "layout route" is a shared component that inserts common content on all pages, such as navigation menu
